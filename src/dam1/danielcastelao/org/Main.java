@@ -23,5 +23,10 @@ public class Main {
         // comprobar con el debug que los dos objetos:
         // miUnicaInstancia y otraInstanciaSeraLaMisma son el mismo
         otraInstanciaSeraLaMisma.setEdad(34);
+
+
+        // version 1.1 del programa con otra instancia
+        Singleton versionInstancia = Singleton.getInstance();
+        versionInstancia.setNombre("version 1.1");
     }
 }
