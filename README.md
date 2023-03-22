@@ -28,7 +28,7 @@ Crearemos un proyecto nuevo y le pondremos de nombre `ProxectoSingleton`.
 
 Lo subimos a GitHub.
 
-Vamos a crear una clase que solo va a instanciarse una vez, la llamaremos `Singleton`
+Vamos a crear una clase que solo va a instanciarse una vez, la llamaremos `BaseDeDatos`
 
 
 ________________
@@ -41,94 +41,88 @@ De esta manera no podremos acceder a él desde la clase principal.
 ________________
  
 ```
-public class Singleton {
+public class BaseDeDatos {
     /**
     * Constructor bloqueado con private
     */
-    private Singleton() {}
+    private BasedeDatos() {}
 
 }
 ```
 
 Si no puedo acceder a él, entonces desde la clase principal, no puedo usar la sentencia:
 
+Intento instanciar un objeto con el constructor privado, esto es un error
 
-//intento instanciar un objeto con el constructor privado
-// esto es un error
-Singleton miUnicaInstancia = new Singleton();
-	El IDE me dará un error: 
-'Singleton()' has private access in 'com.mipaquete.Singleton'
+`BasedeDatos miUnicaInstancia = new BasedeDatos();`
+
+El IDE me dará un error: 
+
+*'BaseDeDatos()' has private access in '...'*
 
 
-Pero esto es lo que queremos. Lo que vamos a hacer es crear un método para devolver un objeto único. Este método en los Singleton se suele llamar siempre igual: “getInstance()”
+Pero, ¡esto es lo que queremos!.
 
+Lo que vamos a hacer es crear un método para devolver un objeto único.
+
+Este método en los Singleton se suele llamar siempre igual: `getInstance()`
+
+---
 
 Antes de crear este método, vamos a crear un par de atributos, para despues comprobar que tenemos el mismo objeto.
-En la clase Singleton, añadimos ‘nombre’ y ‘edad’, y sus relativos get/set
-________________
-Atributo instance - Método getInstance()
-La propia clase Singleton va a ser la que contenga su propia y única instancia.
-Para eso vamos a definir un atributo ‘static’ que el tipo va a ser la propia clase:
+
+En la clase BaseDeDatos, añadimos `nombre` y `token`, y sus relativos `get/set`
+
+## Método getInstance()
+
+La propia clase `BaseDeDatos` va a ser la que contenga su propia y única instancia.
+
+Para eso vamos a definir un atributo `static` que el tipo va a ser la propia clase:
+
+`private static BaseDeDatos instance = null;`
+
+Nuestro método tiene que comprobar si `instance` es `null`
+
+Si es `null` quiere decir que nunca se instanción, entonces hay que instanciarlo.
+
+Si no fuera `null`, quiere decir que ya fué creado antes, asi que no hacemos nada y lo devolvemos.
 
 
-// esta va a ser nuestra unica instancia
-private static Singleton instance = null;
-	
+>Importante:  el método `getInstance()` será `static` para poder acceder directamente desde la clase `Singleton`
 
-Nuestro método tiene que comprobar si ‘instance’ es ‘null’. Si es ‘null’ qiuere decir que nunca se instanció, entonces hay que instanciarlo. Si no fuera ‘null’, quiere decir que ya fué creado antes, asi que no hacemos nada y lo devolvemos.
+Segun exista o no ya el objeto lo instanciamos o cambiamos los datos
 
-
-________________
-
-
-Importante:  el método getInstance() será ‘static’ para poder acceder directamente desde la clase Singleton
-________________
-
-
-
-
-/**
-* Segun exista o no ya el objeto lo instanciamos o cambiamos los datos
-*
-* @return la instancia. Si no existe la crea primero
-*/
-public static Singleton getInstance() {
+```
+public static BaseDeDatos getInstance() {
    if (instance == null) {
        // desde aqui si que puedo acceder al constructor
        // porque estoy en la misma clase
-       instance = new Singleton();
+       instance = new BaseDeDatos();
    }
    return instance;
 }
+```
 
+## Pruebas
 
-	________________
-Pruebas
 Para las pruebas vamos a instanciar dos objetos y comprobaremos que son el mismo
-Primero ‘miUnicaInstancia’:
 
+Primero creamos un objeto `miUnicaInstancia`:
 
-// creamos un objeto
-Singleton miUnicaInstancia = Singleton.getInstance();
-// rellenamos los atributos
+`Singleton miUnicaInstancia = BaseDeDatos.getInstance();`
+
+Rellenamos los atributos
+
+```
 miUnicaInstancia.setEdad(20);
 miUnicaInstancia.setNombre("Pepe");
-	Luego, otro diferente ‘otraInstanciaSeraLaMisma, que será el mismo:
-
-
-// creamos otro objeto Singleton
-// como la única manera es con getInstance(), este método se encargará
-// de devolvernos el objeto creado anteriormente
-Singleton otraInstanciaSeraLaMisma = Singleton.getInstance();
-// podemos cambiar la edad
-// comprobar con el debug que los dos objetos:
-// miUnicaInstancia y otraInstanciaSeraLaMisma son el mismo
-otraInstanciaSeraLaMisma.setEdad(34);
-
-
+```
 	
+Luego, otro diferente `otraInstanciaSeraLaMisma`, que será el mismo, ya que el método se encargará de entregar el mismo objeto:
+
+```
+Singleton otraInstanciaSeraLaMisma = Singleton.getInstance();
+otraInstanciaSeraLaMisma.setEdad(34);
+```
 
 Comprueba con el debug que son el mismo objeto.
-
-
-Documentación complementaria
